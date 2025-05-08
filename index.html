@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --background: #0f172a;
+            --text: #e2e8f0;
+            --accent: #f8fafc;
+            --card-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(40px);
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .btn:hover {
+            background-color: #1e40af;
+            transform: translateY(-3px);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--accent);
+        }
+
+        .projects {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-image {
+            height: 200px;
+            background-color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background-color: rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .about {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-content {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill {
+            background-color: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .contact {
+            max-width: 800px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text);
+            text-decoration: none;
+            transition: transform 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-link:hover {
+            transform: translateY(-5px);
+            color: var(--primary);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .about {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                display: none;
+            }
+        }
+
+        /* Loading animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loader-circle {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(37, 99, 235, 0.5);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(37, 99, 235, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            pointer-events: none;
+            z-index: 9998;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-circle"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <header>
+        <div class="logo">YourName</div>
+        <nav>
+            <ul>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Hi, I'm <span style="color: var(--primary);">Your Name</span></h1>
+        <p>A creative developer passionate about building beautiful digital experiences.</p>
+        <a href="#projects" class="btn">View My Work</a>
+    </section>
+
+    <section class="projects" id="projects">
+        <h2 class="section-title">My Projects</h2>
+        <div class="project-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="/api/placeholder/600/400" alt="Project 1">
+                </div>
+                <div class="project-content">
+                    <h3>Project One</h3>
+                    <div class="project-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
+                    <p>A modern web application for tracking personal finances with beautiful data visualizations.</p>
+                </div>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="/api/placeholder/600/400" alt="Project 2">
+                </div>
+                <div class="project-content">
+                    <h3>Project Two</h3>
+                    <div class="project-tags">
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">Dart</span>
+                    </div>
+                    <p>A cross-platform mobile app designed to help users organize their daily tasks and improve productivity.</p>
+                </div>
+            </div>
+            
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="/api/placeholder/600/400" alt="Project 3">
+                </div>
+                <div class="project-content">
+                    <h3>Project Three</h3>
+                    <div class="project-tags">
+                        <span class="tag">Vue.js</span>
+                        <span class="tag">WebGL</span>
+                        <span class="tag">Python</span>
+                    </div>
+                    <p>An interactive 3D visualization tool that transforms complex data into insightful visual representations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-image">
+            <img src="/api/placeholder/600/800" alt="Your Name">
+        </div>
+        <div class="about-content">
+            <h2>About Me</h2>
+            <p>I'm a passionate developer with expertise in creating modern, user-friendly applications. With a background in both frontend and backend development, I bring a holistic approach to every project.</p>
+            <p>My goal is to build digital experiences that are not only functional but also beautiful and intuitive. I'm constantly learning new technologies and improving my skills.</p>
+            <div class="skills">
+                <span class="skill">JavaScript</span>
+                <span class="skill">React</span>
+                <span class="skill">Node.js</span>
+                <span class="skill">Python</span>
+                <span class="skill">UI/UX Design</span>
+                <span class="skill">MongoDB</span>
+                <span class="skill">Express</span>
+                <span class="skill">Flutter</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p>Interested in working together? Feel free to reach out through any of these channels.</p>
+        <div class="contact-links">
+            <a href="mailto:your.email@example.com" class="contact-link">
+                <div class="contact-icon">📧</div>
+                <span>Email</span>
+            </a>
+            <a href="https://linkedin.com" target="_blank" class="contact-link">
+                <div class="contact-icon">💼</div>
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com" target="_blank" class="contact-link">
+                <div class="contact-icon">💻</div>
+                <span>GitHub</span>
+            </a>
+            <a href="https://twitter.com" target="_blank" class="contact-link">
+                <div class="contact-icon">🐦</div>
+                <span>Twitter</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Your Name. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        // Loader animation
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loader');
+            
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    
+                    // Animations after page load
+                    animateElements();
+                }, 500);
+            }, 1500);
+        });
+        
+        // GSAP animations
+        function animateElements() {
+            // Hero animations
+            gsap.to('.hero h1', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out'
+            });
+            
+            gsap.to('.hero p', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+            
+            gsap.to('.btn', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.6,
+                ease: 'power3.out'
+            });
+            
+            // Project cards animation
+            gsap.to('.project-card', {
+                scrollTrigger: {
+                    trigger: '.projects',
+                    start: 'top 80%'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+            
+            // About section animation
+            gsap.to('.about-image', {
+                scrollTrigger: {
+                    trigger: '.about',
+                    start: 'top 80%'
+                },
+                opacity: 1,
+                x: 0,
+                duration: 1,
+                ease: 'power3.out'
+            });
+            
+            gsap.to('.about-content', {
+                scrollTrigger: {
+                    trigger: '.about',
+                    start: 'top 80%'
+                },
+                opacity: 1,
+                x: 0,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+            
+            // Contact links animation
+            gsap.to('.contact-link', {
+                scrollTrigger: {
+                    trigger: '.contact',
+                    start: 'top 80%'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out'
+            });
+        }
+
+        // Initialize animations if document is already loaded
+        if (document.readyState === 'complete') {
+            animateElements();
+        }
+    </script>
+</body>
+</html>
